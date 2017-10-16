@@ -58,8 +58,10 @@ data_ids = data$biobank_id
 all(demog_ids %in% data_ids)
 all(data_ids %in% demog_ids)
 
-qcut = function(x, ...) {
-    q = quantile(x, ...)
+qcut = function(x, 
+    na.rm = TRUE,
+    ...) {
+    q = quantile(x, na.rm = na.rm, ...)
     q = unname(q)
     x = cut(x, 
         breaks = q,
@@ -82,15 +84,17 @@ transparent_legend =  theme(
 )
 run_vars = c("sex", 
     "age_assessment", "bmi")
-varname = run_vars[1]
+# varname = run_vars[1]
+varname = "bmi"
 
 pdfname = file.path(res_dir, 
     "Median_plots.pdf")
+pdf(pdfname)
 
 for (varname in run_vars) {
 
-    x = unlist(demog[, varname])
-    continuous = is.numeric(x)
+    xx = unlist(demog[, varname])
+    continuous = is.numeric(xx)
 
 
     sub = demog %>% 
@@ -99,6 +103,8 @@ for (varname in run_vars) {
         sub = sub %>% 
         mutate_(x = varname) %>% 
         mutate(qage = qcut(x)) 
+        hist(xx, breaks = 100)
+
     } else {
         sub = sub %>% mutate_(qage = varname)
     }
@@ -106,6 +112,8 @@ for (varname in run_vars) {
         select(biobank_id, qage)
 
     sdata = left_join(data, sub)
+    sdata = sdata %>% 
+        filter(!is.na(qage))
 
     sdata = split(sdata, sdata$qage)
     sdata = lapply(sdata, function(x) {
