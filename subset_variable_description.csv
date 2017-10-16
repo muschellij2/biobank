@@ -1,0 +1,113 @@
+Column,UDI,Count,Type,Description,coding,varname,rename,time_varying
+0,eid,502639,Sequence,Encoded anonymised participant ID,NA,f.eid,eid,FALSE
+4,31-0.0,502639,Categorical (single),Sex,9,f.31.0.0,sex,FALSE
+5,34-0.0,502639,Integer,Year of birth,NA,f.34.0.0,yob,FALSE
+21,52-0.0,502639,Categorical (single),Month of birth,8,f.52.0.0,mob,FALSE
+22,53-0.0,502639,Date,Date of attending assessment centre,NA,f.53.0.0,date_attend,TRUE
+23,53-1.0,20348,Date,Date of attending assessment centre,NA,f.53.1.0,date_attend,TRUE
+24,53-2.0,11130,Date,Date of attending assessment centre,NA,f.53.2.0,date_attend,TRUE
+121,924-0.0,499831,Categorical (single),Usual walking pace,100313,f.924.0.0,walk_pace,TRUE
+122,924-1.0,20281,Categorical (single),Usual walking pace,100313,f.924.1.0,walk_pace,TRUE
+123,924-2.0,11025,Categorical (single),Usual walking pace,100313,f.924.2.0,walk_pace,TRUE
+508,2443-0.0,501707,Categorical (single),Diabetes diagnosed by doctor,100349,f.2443.0.0,diabetes,TRUE
+509,2443-1.0,20339,Categorical (single),Diabetes diagnosed by doctor,100349,f.2443.1.0,diabetes,TRUE
+510,2443-2.0,11037,Categorical (single),Diabetes diagnosed by doctor,100349,f.2443.2.0,diabetes,TRUE
+976,6142-0.0,501768,Categorical (multiple),Current employment status,100295,f.6142.0.0,employment,TRUE
+977,6142-0.1,39554,Categorical (multiple),Current employment status,100295,f.6142.0.1,employment,TRUE
+978,6142-0.2,6159,Categorical (multiple),Current employment status,100295,f.6142.0.2,employment,TRUE
+979,6142-0.3,511,Categorical (multiple),Current employment status,100295,f.6142.0.3,employment,TRUE
+980,6142-0.4,35,Categorical (multiple),Current employment status,100295,f.6142.0.4,employment,TRUE
+981,6142-0.5,3,Categorical (multiple),Current employment status,100295,f.6142.0.5,employment,TRUE
+982,6142-0.6,1,Categorical (multiple),Current employment status,100295,f.6142.0.6,employment,TRUE
+983,6142-1.0,20339,Categorical (multiple),Current employment status,100295,f.6142.1.0,employment,TRUE
+984,6142-1.1,1774,Categorical (multiple),Current employment status,100295,f.6142.1.1,employment,TRUE
+985,6142-1.2,332,Categorical (multiple),Current employment status,100295,f.6142.1.2,employment,TRUE
+986,6142-1.3,20,Categorical (multiple),Current employment status,100295,f.6142.1.3,employment,TRUE
+987,6142-1.4,1,Categorical (multiple),Current employment status,100295,f.6142.1.4,employment,TRUE
+988,6142-1.5,0,Categorical (multiple),Current employment status,100295,f.6142.1.5,employment,TRUE
+989,6142-1.6,0,Categorical (multiple),Current employment status,100295,f.6142.1.6,employment,TRUE
+990,6142-2.0,11037,Categorical (multiple),Current employment status,100295,f.6142.2.0,employment,TRUE
+991,6142-2.1,847,Categorical (multiple),Current employment status,100295,f.6142.2.1,employment,TRUE
+992,6142-2.2,162,Categorical (multiple),Current employment status,100295,f.6142.2.2,employment,TRUE
+993,6142-2.3,11,Categorical (multiple),Current employment status,100295,f.6142.2.3,employment,TRUE
+994,6142-2.4,0,Categorical (multiple),Current employment status,100295,f.6142.2.4,employment,TRUE
+995,6142-2.5,0,Categorical (multiple),Current employment status,100295,f.6142.2.5,employment,TRUE
+996,6142-2.6,0,Categorical (multiple),Current employment status,100295,f.6142.2.6,employment,TRUE
+1090,6150-0.0,501709,Categorical (multiple),Vascular/heart problems diagnosed by doctor,100605,f.6150.0.0,vascular,TRUE
+1091,6150-0.1,17628,Categorical (multiple),Vascular/heart problems diagnosed by doctor,100605,f.6150.0.1,vascular,TRUE
+1092,6150-0.2,3889,Categorical (multiple),Vascular/heart problems diagnosed by doctor,100605,f.6150.0.2,vascular,TRUE
+1093,6150-0.3,376,Categorical (multiple),Vascular/heart problems diagnosed by doctor,100605,f.6150.0.3,vascular,TRUE
+1094,6150-1.0,20339,Categorical (multiple),Vascular/heart problems diagnosed by doctor,100605,f.6150.1.0,vascular,TRUE
+1095,6150-1.1,760,Categorical (multiple),Vascular/heart problems diagnosed by doctor,100605,f.6150.1.1,vascular,TRUE
+1096,6150-1.2,147,Categorical (multiple),Vascular/heart problems diagnosed by doctor,100605,f.6150.1.2,vascular,TRUE
+1097,6150-1.3,11,Categorical (multiple),Vascular/heart problems diagnosed by doctor,100605,f.6150.1.3,vascular,TRUE
+1098,6150-2.0,11037,Categorical (multiple),Vascular/heart problems diagnosed by doctor,100605,f.6150.2.0,vascular,TRUE
+1099,6150-2.1,291,Categorical (multiple),Vascular/heart problems diagnosed by doctor,100605,f.6150.2.1,vascular,TRUE
+1100,6150-2.2,31,Categorical (multiple),Vascular/heart problems diagnosed by doctor,100605,f.6150.2.2,vascular,TRUE
+1101,6150-2.3,1,Categorical (multiple),Vascular/heart problems diagnosed by doctor,100605,f.6150.2.3,vascular,TRUE
+2333,20160-0.0,499751,Categorical (single),Ever smoked,7,f.20160.0.0,smoke,TRUE
+2334,20160-1.0,20288,Categorical (single),Ever smoked,7,f.20160.1.0,smoke,TRUE
+2335,20160-2.0,8655,Categorical (single),Ever smoked,7,f.20160.2.0,smoke,TRUE
+2336,21000-0.0,501740,Categorical (single),Ethnic background,1001,f.21000.0.0,ethnicity,TRUE
+2337,21000-1.0,20339,Categorical (single),Ethnic background,1001,f.21000.1.0,ethnicity,TRUE
+2338,21000-2.0,11037,Categorical (single),Ethnic background,1001,f.21000.2.0,ethnicity,TRUE
+2339,21001-0.0,499534,Continuous,Body mass index (BMI),NA,f.21001.0.0,bmi,TRUE
+2340,21001-1.0,20302,Continuous,Body mass index (BMI),NA,f.21001.1.0,bmi,TRUE
+2341,21001-2.0,9636,Continuous,Body mass index (BMI),NA,f.21001.2.0,bmi,TRUE
+2345,21003-0.0,502639,Integer,Age when attended assessment centre,NA,f.21003.0.0,age_assessment,TRUE
+2346,21003-1.0,20002,Integer,Age when attended assessment centre,NA,f.21003.1.0,age_assessment,TRUE
+2347,21003-2.0,9242,Integer,Age when attended assessment centre,NA,f.21003.2.0,age_assessment,TRUE
+2351,21022-0.0,502639,Integer,Age at recruitment,NA,f.21022.0.0,age_recruitment,TRUE
+2353,22001-0.0,152727,Categorical (single),Genetic sex,9,f.22001.0.0,genetic_sex,FALSE
+2474,23099-0.0,492229,Continuous,Body fat percentage,NA,f.23099.0.0,body_fat_pct,TRUE
+2475,23099-1.0,20040,Continuous,Body fat percentage,NA,f.23099.1.0,body_fat_pct,TRUE
+2482,23105-0.0,492490,Continuous,Basal metabolic rate,NA,f.23105.0.0,bmr,TRUE
+2483,23105-1.0,20047,Continuous,Basal metabolic rate,NA,f.23105.1.0,bmr,TRUE
+2551,40000-0.0,14422,Date,Date of death,NA,f.40000.0.0,date_death,TRUE
+2552,40000-1.0,1364,Date,Date of death,NA,f.40000.1.0,date_death,TRUE
+2553,40000-2.0,718,Date,Date of death,NA,f.40000.2.0,date_death,TRUE
+2599,40005-0.0,79067,Date,Date of cancer diagnosis,NA,f.40005.0.0,date_cancer_dx,FALSE
+2600,40005-1.0,69384,Date,Date of cancer diagnosis,NA,f.40005.1.0,date_cancer_dx,FALSE
+2601,40005-2.0,54476,Date,Date of cancer diagnosis,NA,f.40005.2.0,date_cancer_dx,FALSE
+2602,40005-3.0,11702,Date,Date of cancer diagnosis,NA,f.40005.3.0,date_cancer_dx,FALSE
+2603,40005-4.0,8380,Date,Date of cancer diagnosis,NA,f.40005.4.0,date_cancer_dx,FALSE
+2604,40005-5.0,6393,Date,Date of cancer diagnosis,NA,f.40005.5.0,date_cancer_dx,FALSE
+2605,40005-6.0,1625,Date,Date of cancer diagnosis,NA,f.40005.6.0,date_cancer_dx,FALSE
+2606,40005-7.0,1143,Date,Date of cancer diagnosis,NA,f.40005.7.0,date_cancer_dx,FALSE
+2607,40005-8.0,806,Date,Date of cancer diagnosis,NA,f.40005.8.0,date_cancer_dx,FALSE
+2608,40005-9.0,265,Date,Date of cancer diagnosis,NA,f.40005.9.0,date_cancer_dx,FALSE
+2609,40005-10.0,179,Date,Date of cancer diagnosis,NA,f.40005.10.0,date_cancer_dx,FALSE
+2610,40005-11.0,132,Date,Date of cancer diagnosis,NA,f.40005.11.0,date_cancer_dx,FALSE
+2611,40005-12.0,53,Date,Date of cancer diagnosis,NA,f.40005.12.0,date_cancer_dx,FALSE
+2612,40005-13.0,42,Date,Date of cancer diagnosis,NA,f.40005.13.0,date_cancer_dx,FALSE
+2613,40005-14.0,30,Date,Date of cancer diagnosis,NA,f.40005.14.0,date_cancer_dx,FALSE
+2614,40005-15.0,16,Date,Date of cancer diagnosis,NA,f.40005.15.0,date_cancer_dx,FALSE
+2615,40005-16.0,12,Date,Date of cancer diagnosis,NA,f.40005.16.0,date_cancer_dx,FALSE
+2616,40005-17.0,11,Date,Date of cancer diagnosis,NA,f.40005.17.0,date_cancer_dx,FALSE
+2617,40005-18.0,8,Date,Date of cancer diagnosis,NA,f.40005.18.0,date_cancer_dx,FALSE
+2618,40005-19.0,7,Date,Date of cancer diagnosis,NA,f.40005.19.0,date_cancer_dx,FALSE
+2619,40005-20.0,5,Date,Date of cancer diagnosis,NA,f.40005.20.0,date_cancer_dx,FALSE
+2663,40007-0.0,14422,Continuous,Age at death,NA,f.40007.0.0,age_death,TRUE
+2664,40007-1.0,1364,Continuous,Age at death,NA,f.40007.1.0,age_death,TRUE
+2665,40007-2.0,718,Continuous,Age at death,NA,f.40007.2.0,age_death,TRUE
+2666,40008-0.0,79067,Continuous,Age at cancer diagnosis,NA,f.40008.0.0,age_cancer_dx,FALSE
+2667,40008-1.0,69384,Continuous,Age at cancer diagnosis,NA,f.40008.1.0,age_cancer_dx,FALSE
+2668,40008-2.0,54476,Continuous,Age at cancer diagnosis,NA,f.40008.2.0,age_cancer_dx,FALSE
+2669,40008-3.0,11702,Continuous,Age at cancer diagnosis,NA,f.40008.3.0,age_cancer_dx,FALSE
+2670,40008-4.0,8380,Continuous,Age at cancer diagnosis,NA,f.40008.4.0,age_cancer_dx,FALSE
+2671,40008-5.0,6393,Continuous,Age at cancer diagnosis,NA,f.40008.5.0,age_cancer_dx,FALSE
+2672,40008-6.0,1625,Continuous,Age at cancer diagnosis,NA,f.40008.6.0,age_cancer_dx,FALSE
+2673,40008-7.0,1143,Continuous,Age at cancer diagnosis,NA,f.40008.7.0,age_cancer_dx,FALSE
+2674,40008-8.0,806,Continuous,Age at cancer diagnosis,NA,f.40008.8.0,age_cancer_dx,FALSE
+2675,40008-9.0,265,Continuous,Age at cancer diagnosis,NA,f.40008.9.0,age_cancer_dx,FALSE
+2676,40008-10.0,179,Continuous,Age at cancer diagnosis,NA,f.40008.10.0,age_cancer_dx,FALSE
+2677,40008-11.0,132,Continuous,Age at cancer diagnosis,NA,f.40008.11.0,age_cancer_dx,FALSE
+2678,40008-12.0,53,Continuous,Age at cancer diagnosis,NA,f.40008.12.0,age_cancer_dx,FALSE
+2679,40008-13.0,42,Continuous,Age at cancer diagnosis,NA,f.40008.13.0,age_cancer_dx,FALSE
+2680,40008-14.0,30,Continuous,Age at cancer diagnosis,NA,f.40008.14.0,age_cancer_dx,FALSE
+2681,40008-15.0,16,Continuous,Age at cancer diagnosis,NA,f.40008.15.0,age_cancer_dx,FALSE
+2682,40008-16.0,12,Continuous,Age at cancer diagnosis,NA,f.40008.16.0,age_cancer_dx,FALSE
+2683,40008-17.0,11,Continuous,Age at cancer diagnosis,NA,f.40008.17.0,age_cancer_dx,FALSE
+2684,40008-18.0,8,Continuous,Age at cancer diagnosis,NA,f.40008.18.0,age_cancer_dx,FALSE
+2685,40008-19.0,7,Continuous,Age at cancer diagnosis,NA,f.40008.19.0,age_cancer_dx,FALSE
+2686,40008-20.0,5,Continuous,Age at cancer diagnosis,NA,f.40008.20.0,age_cancer_dx,FALSE
