@@ -1,0 +1,20 @@
+21001-0.0 # bmi
+31-0.0 # sex
+52-0.0 # mob
+34-0.0 # yob
+53-0.0 # date assessed
+21003-0.0 # age when assessed
+21022-0.0 # age at recruitment
+22001-0.0 # genetic sex
+23099-0.0 # body fat %
+23105-0.0 # basal metabolic rate
+924-0.0 # usual walking pace
+2443-0.0 # diabetes
+6150-0.0 # heart problems
+21000-0.0 # ethnic background
+20160-0.0 # smoking
+6142-0.0 # current employment status
+40000-0.0 # date of death
+40005-0.0 # date of cancer diag
+40007-0.0 # age at death
+40008-0.0 # age at cancer dx

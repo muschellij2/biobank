@@ -16,7 +16,7 @@ data_dir = file.path(
   root_dir,
   "intensity")
 out_dir = file.path(root_dir,
-	"collapsed")
+    "collapsed")
 # think about putting in biobankr
 id_file = file.path(root_dir, 
                     "ids.txt")
@@ -29,96 +29,101 @@ iid = as.numeric(
 if (is.na(iid)) {
   iid = 2
 }
+# id_out_dir = file.path(out_dir,
+#     biobank_ids)
+
+# for (iid in seq_along(biobank_ids)) {
+print(paste0("iid is ", iid))
 
 biobank_id = biobank_ids[iid]
 # original CSV.gz
 infile = file.path(
-	data_dir, 
-	paste0(biobank_id, stub)
+    data_dir, 
+    paste0(biobank_id, stub)
 )
 
 # creating output directory
 id_out_dir = file.path(out_dir,
-	biobank_id)
+    biobank_id)
 if (!dir.exists(id_out_dir)) {
-	dir.create(id_out_dir)
+    dir.create(id_out_dir)
 }
 # adding ID to df
 add_id = function(df, biobank_id) {
-	df %>% 
-	mutate(biobank_id = biobank_id)  %>% 
-	select(biobank_id, everything())
+    df %>% 
+    mutate(biobank_id = biobank_id)  %>% 
+    select(biobank_id, everything())
 }
 
 
 
 # Output files
 daily_file = file.path(id_out_dir,
-	"daily_activity_1440.rds")
+    "daily_activity_1440.rds")
 activ_file = file.path(id_out_dir,
-	"activity_1440.rds")
+    "activity_1440.rds")
 
 no_imp_daily_file = file.path(id_out_dir,
-	"no_imputed_daily_activity_1440.rds")
+    "no_imputed_daily_activity_1440.rds")
 no_imp_activ_file = file.path(id_out_dir,
-	"no_imputed_activity_1440.rds")
+    "no_imputed_activity_1440.rds")
 
 out_files = c(daily_file, activ_file,
-	no_imp_daily_file, no_imp_activ_file)
+    no_imp_daily_file, no_imp_activ_file)
 
 if (!all(file.exists(out_files))) {
-	# organize the data
-	df = bb_read(infile)
+    # organize the data
+    df = bb_read(infile)
 
-	means = bb_1440(
-	  df, 
-	  summarize_func = "mean"
-	)
+    means = bb_1440(
+      df, 
+      summarize_func = "mean"
+    )
 
-	means = add_id(means, biobank_id)
+    means = add_id(means, biobank_id)
 
-	saveRDS(means, file = daily_file)
+    saveRDS(means, file = daily_file)
 
-	means_noday = bb_1440(
-	  df, 
-	  summarize_func = "mean",
-	  summarize_over_day = TRUE
-	)
+    means_noday = bb_1440(
+      df, 
+      summarize_func = "mean",
+      summarize_over_day = TRUE
+    )
 
-	means_noday = add_id(means_noday, 
-		biobank_id)
+    means_noday = add_id(means_noday, 
+        biobank_id)
 
-	saveRDS(means_noday, file = activ_file)
+    saveRDS(means_noday, file = activ_file)
 
 
 
-	no_imp_means = bb_1440(
-	  df, 
-	  summarize_func = "mean",
-	  keep_imputed = FALSE
-	)
+    no_imp_means = bb_1440(
+      df, 
+      summarize_func = "mean",
+      keep_imputed = FALSE
+    )
 
-	no_imp_means = add_id(no_imp_means, 
-		biobank_id)
+    no_imp_means = add_id(no_imp_means, 
+        biobank_id)
 
-	saveRDS(no_imp_means, 
-		file = no_imp_daily_file)
+    saveRDS(no_imp_means, 
+        file = no_imp_daily_file)
 
-	no_imp_means_noday = bb_1440(
-	  df, 
-	  summarize_func = "mean",
-	  summarize_over_day = TRUE,
-	  keep_imputed = FALSE
-	)
+    no_imp_means_noday = bb_1440(
+      df, 
+      summarize_func = "mean",
+      summarize_over_day = TRUE,
+      keep_imputed = FALSE
+    )
 
-	no_imp_means_noday = add_id(
-		no_imp_means_noday, 
-		biobank_id)
+    no_imp_means_noday = add_id(
+        no_imp_means_noday, 
+        biobank_id)
 
-	saveRDS(no_imp_means_noday, 
-		file = no_imp_activ_file)	
+    saveRDS(no_imp_means_noday, 
+        file = no_imp_activ_file)    
 
-	
+    
 }
 
-
+# }
