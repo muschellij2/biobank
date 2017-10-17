@@ -83,7 +83,9 @@ transparent_legend =  theme(
     color = "transparent")
 )
 run_vars = c("sex", 
-    "age_assessment", "bmi")
+    "age_assessment", "bmi",
+    "smoke", "genetic_sex",
+    "bmr", "body_fat_pct")
 # varname = run_vars[1]
 varname = "bmi"
 
@@ -103,7 +105,8 @@ for (varname in run_vars) {
         sub = sub %>% 
         mutate_(x = varname) %>% 
         mutate(qage = qcut(x)) 
-        hist(xx, breaks = 100)
+        hist(xx, breaks = 100,
+            main = varname)
 
     } else {
         sub = sub %>% mutate_(qage = varname)
