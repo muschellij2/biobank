@@ -84,7 +84,8 @@ transparent_legend =  theme(
 )
 run_vars = c("sex", 
     "age_assessment", "bmi",
-    "smoke", "genetic_sex",
+    "smoke", 
+    # "genetic_sex",
     "bmr", "body_fat_pct")
 # varname = run_vars[1]
 varname = "bmi"
@@ -182,7 +183,7 @@ for (varname in run_vars) {
     gm_smooth = gmed + 
         geom_smooth(se = FALSE)
     print(gm_smooth)
-    print(gm_smooth %+% cmed)
+    # print(gm_smooth %+% cmed)
 
 }
 
