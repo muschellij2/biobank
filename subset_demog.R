@@ -31,6 +31,7 @@ if (!file.exists(demog_file)) {
     "f.21001.", "f.31.", "f.52.", 
     "f.34.", "f.53.", "f.21003.", 
     "f.21022.",
+    "f.54.",
     "f.22001.", "f.23099.", "f.23105.", 
     "f.924.", "f.2443.", "f.6150.", 
     "f.21000.", "f.20160.", "f.6142.", 
@@ -50,7 +51,7 @@ if (!file.exists(demog_file)) {
   all_demog = df[, keep_cn]
   
   
-  write_csv(all_demog, path = outfile)
+  write_csv(all_demog, path = demog_file)
   
 } else {
   all_demog = read_csv(demog_file)

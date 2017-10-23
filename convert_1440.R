@@ -1,5 +1,5 @@
 # convert_1440
-rm(list=ls())
+rm(list = ls())
 library(biobankr)
 library(dplyr)
 # set to
@@ -27,8 +27,9 @@ iid = as.numeric(
   Sys.getenv("SGE_TASK_ID")
 )
 if (is.na(iid)) {
-  iid = 2
+  iid = 25
 }
+# iid = which(biobank_ids == 1000888)
 # id_out_dir = file.path(out_dir,
 #     biobank_ids)
 
@@ -56,49 +57,52 @@ add_id = function(df, biobank_id) {
 }
 
 
-func = "sum"
-stub = ifelse(func != "mean",
-              paste0(func, "_"), "")
-
+func = "mean"
+# prefix = ifelse(
+#   func != "mean",
+#               paste0(func, "_"), "")
+prefix = paste0(func, "_")
 # Output files
 daily_file = file.path(
   id_out_dir,
-  paste0(stub, 
+  paste0(prefix, 
          "daily_activity_1440.rds"))
 activ_file = file.path(
   id_out_dir,
-  paste0(stub, 
+  paste0(prefix, 
          "activity_1440.rds"))
 
 no_imp_daily_file = file.path(
   id_out_dir,
-  paste0(stub,
+  paste0(prefix,
          "no_imputed_daily_", 
          "activity_1440.rds"))
 no_imp_activ_file = file.path(
   id_out_dir,
-  paste0(stub, 
+  paste0(prefix, 
          "no_imputed_activity_1440.rds"))
 
 count_file = file.path(
   id_out_dir,
-  paste0(stub, 
-         "non_imputed_activity_1440.rds"))
+  "non_imputed_counts_1440.rds")
 
 out_files = c(daily_file, activ_file,
               no_imp_daily_file, 
               no_imp_activ_file,
               count_file)
-
+# bad id 1000888
 if (!all(file.exists(out_files))) {
   # organize the data
   df = bb_read(infile)
+
   
   if (!file.exists(count_file)) {
-    counts = bb_1440_count(df)
+    counts = bb_1440_count(
+      df, long = TRUE,
+      keep_imputed = FALSE)
     counts = add_id(counts, biobank_id)
     
-    saveRDS(counts, file = counts_file)
+    saveRDS(counts, file = count_file)
   }
   
   if (!file.exists(daily_file)) {
@@ -155,8 +159,6 @@ if (!all(file.exists(out_files))) {
     saveRDS(no_imp_means_noday, 
             file = no_imp_activ_file)   
   } 
-  
-  
   
   
 }

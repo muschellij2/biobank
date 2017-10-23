@@ -1,0 +1,83 @@
+# convert_1440
+rm(list=ls())
+library(biobankr)
+library(dplyr)
+# set to
+# /dcl01/chatterj/data/ukbiobank/phenotype
+pheno_dir = Sys.getenv("biobank")
+
+#############################
+# Set up directories
+#############################
+root_dir = file.path(
+  pheno_dir,
+  "accelerometer")
+data_dir = file.path(
+  root_dir,
+  "intensity")
+coll_dir = file.path(root_dir,
+                     "collapsed")
+out_dir = file.path(root_dir,
+                    "analysis")
+# think about putting in biobankr
+id_file = file.path(root_dir, 
+                    "ids.txt")
+biobank_ids = readLines(id_file)
+n_ids = length(biobank_ids)
+
+func = "mean"
+prefix = paste0(func, "_")
+
+
+
+#################################
+# Not imputed data
+#################################
+inside = "no_imputed_"
+for (inside in c("", "no_imputed_")) {
+  pop_daily_file = file.path(
+    out_dir,
+    paste0(prefix, 
+           "pop_", inside, 
+           "daily_activity_long.rds"))
+
+  # note the change in no_imp_daily
+  df = readRDS(file = pop_daily_file)
+  check = !any(is.na(df$biobank_id))
+  stopifnot(check)
+  
+  # Only one day
+  pop_activ_file = file.path(
+    out_dir,
+    paste0(prefix, 
+           "pop_", inside, 
+           "activity_long.rds"))
+  df = df %>% 
+    mutate(sum = n * acceleration)
+
+  df = df %>% 
+    group_by(biobank_id) %>% 
+    date_day_min(from_baseline = FALSE)
+
+  df = df %>% 
+    group_by(biobank_id, minute) %>% 
+    summarize(sum = sum(sum),
+      n = sum(n)) %>% 
+    ungroup
+
+  df = df %>% 
+    mutate(acceleration = sum/n) %>% 
+    select(-sum, -n)  
+
+  saveRDS(object = df, 
+          file = pop_activ_file)
+  rm(list = c("df"))
+  for (i in 1:10) {
+    gc()
+  }
+}
+
+
+
+
+

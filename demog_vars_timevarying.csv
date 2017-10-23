@@ -20,3 +20,4 @@ eid,eid,FALSE
 40005,date_cancer_dx,FALSE
 40007,age_death,TRUE
 40008,age_cancer_dx,FALSE
+54,assessment_center,TRUE
