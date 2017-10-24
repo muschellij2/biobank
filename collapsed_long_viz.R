@@ -31,31 +31,21 @@ res_dir = file.path(root_dir,
     "results")
 
 prefix = "mean_"
+# inside = ""
+# not imputed data
+inside = "no_imputed_"
 # Output files
 pop_daily_file = file.path(
   out_dir,
   paste0(prefix, 
-         "pop_", 
+         "pop_", inside,
          "daily_activity_long.rds"))
 
 pop_activ_file = file.path(
   out_dir,
   paste0(prefix, 
-         "pop_", 
+         "pop_", inside,
          "activity_long.rds"))
-
-# not imputed data
-pop_no_imp_daily_file = file.path(
-  out_dir,
-  paste0(prefix, 
-         "pop_", "no_imputed_",
-         "daily_activity_long.rds"))
-pop_no_imp_activ_file = file.path(
-  out_dir,
-  paste0(prefix, 
-         "pop_", "no_imputed_",
-         "activity_long.rds"))
-
 
 demog_file = file.path(
   tab_dir, 
@@ -64,13 +54,13 @@ demog_file = file.path(
 
 demog = read_csv(demog_file)
 demog = rename(demog, biobank_id = eid)
-demog_ids = demog$biobank_id
+demog_ids = unique(demog$biobank_id)
 demog$biobank_id = as.character(
     demog$biobank_id)
 
 data = readRDS(pop_activ_file)
 # data = readRDS(pop_no_imp_activ_file)
-data_ids = data$biobank_id
+data_ids = unique(data$biobank_id)
 
 stopifnot(all(demog_ids %in% data_ids))
 stopifnot(all(data_ids %in% demog_ids))
@@ -106,9 +96,12 @@ run_vars = c("sex",
     "bmr", "body_fat_pct")
 # varname = run_vars[1]
 varname = "bmi"
+demog = demog[, c("biobank_id", run_vars)]
 
 pdfname = file.path(res_dir, 
-    "Median_plots.pdf")
+    paste0("Median_", 
+      inside,
+      "plots.pdf"))
 pdf(pdfname)
 
 for (varname in run_vars) {

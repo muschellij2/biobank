@@ -20,5 +20,7 @@ Rnosave collapse_long.R -N COLLAPSE \
 
 Rnosave collapse_across_days_long.R \
     -N DAILY \
+    -t 1-4 \
     -hold_jid COLLAPSE \
-    -l mem_free=80G,h_vmem=82G
+    -l mem_free=100G,h_vmem=101G
+
