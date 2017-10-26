@@ -14,8 +14,12 @@ cd ${biobank}/accelerometer/code ;
 #     -M noone@noone.com
 
 
+# Rnosave collapse_long.R -N COLLAPSE \
+# -l mem_free=99G,h_vmem=100G
+
 Rnosave collapse_long.R -N COLLAPSE \
--l mem_free=99G,h_vmem=100G
+    -t 1-2 \
+    -l mem_free=55G,h_vmem=56G
 
 
 Rnosave collapse_across_days_long.R \

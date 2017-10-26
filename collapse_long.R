@@ -34,12 +34,20 @@ add_id = function(df, biobank_id) {
 daily = vector(
   mode = "list", length = n_ids)
 names(daily) = biobank_ids
-no_imp_daily = daily
 
 
 func = "mean"
 prefix = paste0(func, "_")
+insides = c("", "no_imputed_")
 
+iscen = as.numeric(
+  Sys.getenv("SGE_TASK_ID")
+)
+if (is.na(iscen)) {
+  iscen = 1
+}
+inside = insides[iscen]
+print(inside)
 
 summarize_minute = function(df) {
 
@@ -74,25 +82,19 @@ for (iid in seq(n_ids)) {
   
   biobank_id = biobank_ids[iid]
   # creating output directory
-  id_out_dir = file.path(coll_dir,
-                         biobank_id)
+  id_out_dir = file.path(
+    coll_dir,
+    biobank_id)
   
   # Output files
   daily_file = file.path(
     id_out_dir,
-    paste0(prefix, 
-           "daily_activity_long.rds"))
-
-
-  no_imp_daily_file = file.path(
-    id_out_dir,
     paste0(prefix,
-           "no_imputed_daily_", 
+           inside,
+           "daily_", 
            "activity_long.rds"))
 
-  out_files = c(daily_file, 
-                no_imp_daily_file
-                )
+  out_files = c(daily_file)
 
   if (!all(file.exists(out_files))) {
     # organize the data
@@ -102,25 +104,12 @@ for (iid in seq(n_ids)) {
   } else {
     df = readRDS(daily_file)
     df$biobank_id = NULL
-    # if ("biobank_id" %in% colnames(df)) {
-    #   df = add_id(df, biobank_id)
-    # }
     daily[[iid]] = df
-
-    df = readRDS(no_imp_daily_file)
-    df$biobank_id = NULL
-    # if ("biobank_id" %in% colnames(df)) {
-    #   df = add_id(df, biobank_id)
-    # }
-    no_imp_daily[[iid]] = df
-    rm(list = "df")
   }
 }
 
 close(pb)
 
-
-inside = ""
 # Output files
 pop_daily_file = file.path(
   out_dir,
@@ -130,6 +119,12 @@ pop_daily_file = file.path(
 
 daily_df = bind_rows(daily, 
   .id = "biobank_id")
+daily_df$biobank_id = as.integer(
+  daily_df$biobank_id)
+daily_df$acceleration = 
+  as.numeric(daily_df$acceleration)
+
+
 rm(list = c("daily"))
 for (i in 1:10) {
   gc()
@@ -137,65 +132,3 @@ for (i in 1:10) {
 
 saveRDS(object = daily_df, 
         file = pop_daily_file)
-
-# Only one day
-# pop_activ_file = file.path(
-#   out_dir,
-#   paste0(prefix, 
-#          "pop_", inside, 
-#          "activity_long.rds"))
-# daily_df = summarize_minute(daily_df)
-
-# saveRDS(object = daily_df, 
-#         file = pop_activ_file)
-
-# rm(list = c("daily_df"))
-# for (i in 1:10) {
-#   gc()
-# }
-
-
-#################################
-# Not imputed data
-#################################
-inside = "no_imputed_"
-pop_daily_file = file.path(
-  out_dir,
-  paste0(prefix, 
-         "pop_", inside, 
-         "daily_activity_long.rds"))
-
-# note the change in no_imp_daily
-daily_df = bind_rows(no_imp_daily,
-  .id = "biobank_id")
-rm(list = c("no_imp_daily"))
-for (i in 1:10) {
-  gc()
-}
-
-saveRDS(object = daily_df, 
-        file = pop_daily_file)
-
-# Only one day
-# pop_activ_file = file.path(
-#   out_dir,
-#   paste0(prefix, 
-#          "pop_", inside, 
-#          "activity_long.rds"))
-# daily_df = summarize_minute(daily_df)
-# saveRDS(object = daily_df, 
-#         file = pop_activ_file)
-# rm(list = c("daily_df"))
-# for (i in 1:10) {
-#   gc()
-# }
-
-
-
-
-# daily_counts = daily_df %>% 
-#   group_by(biobank_id) %>% 
-#   date_day_min() %>% 
-#   group_by(biobank_id, day) %>% 
-#   summarize(n = n()) %>% 
-#   arrange(biobank_id, day)

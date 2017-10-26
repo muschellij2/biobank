@@ -28,7 +28,7 @@ iid = as.numeric(
   Sys.getenv("SGE_TASK_ID")
 )
 if (is.na(iid)) {
-  iid = 1
+  iid = 72505
 }
 # iid = which(biobank_ids == 1000888)
 # id_out_dir = file.path(out_dir,
@@ -77,6 +77,16 @@ out_files = c(daily_file,
               no_imp_daily_file
               )
 
+filter_df = function(df) {
+  df = df %>% 
+    filter(n > 0)
+
+  df = df %>% 
+    filter(is.finite(acceleration))
+  df = add_id(df, biobank_id)
+  return(df)
+} 
+
 # bad id 1000888
 # if (!all(file.exists(out_files))) {
   # organize the data
@@ -94,12 +104,7 @@ out_files = c(daily_file,
     na.rm = TRUE    
     )
 
-  df = df %>% 
-    filter(n > 0)
-
-  df = df %>% 
-    filter(is.finite(acceleration))
-  df = add_id(df, biobank_id)
+  df = filter_df(df)
   saveRDS(df, file = daily_file)
   print(nrow(df))
   rm(list = "df");gc()
@@ -109,15 +114,11 @@ out_files = c(daily_file,
     keep_imputed = FALSE,
     na.rm = TRUE
     )  
-
-  df = df %>% 
-    filter(n > 0)
-
-  df = df %>% 
-    filter(is.finite(acceleration))
-  df = add_id(df, biobank_id)
+  df = filter_df(df)
+  
 
   saveRDS(df, file = no_imp_daily_file)
+  print(nrow(df))
   rm(list = "df");gc()
 
 # }

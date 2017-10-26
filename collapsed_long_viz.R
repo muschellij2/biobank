@@ -30,23 +30,6 @@ out_dir = file.path(root_dir,
 res_dir = file.path(root_dir,
     "results")
 
-prefix = "mean_"
-# inside = ""
-# not imputed data
-inside = "no_imputed_"
-# Output files
-pop_daily_file = file.path(
-  out_dir,
-  paste0(prefix, 
-         "pop_", inside,
-         "daily_activity_long.rds"))
-
-pop_activ_file = file.path(
-  out_dir,
-  paste0(prefix, 
-         "pop_", inside,
-         "activity_long.rds"))
-
 demog_file = file.path(
   tab_dir, 
   paste0("demographics_reformat", 
@@ -55,14 +38,54 @@ demog_file = file.path(
 demog = read_csv(demog_file)
 demog = rename(demog, biobank_id = eid)
 demog_ids = unique(demog$biobank_id)
-demog$biobank_id = as.character(
+demog$biobank_id = as.integer(
     demog$biobank_id)
+
+
+prefix = "mean_"
+#################################
+# Not imputed data
+#################################
+insides = c("", "no_imputed_")
+thresholds = c(FALSE, TRUE)
+eg = expand.grid(inside = insides, 
+  threshold = thresholds,
+  stringsAsFactors = FALSE)
+
+
+iscen = as.numeric(
+  Sys.getenv("SGE_TASK_ID")
+)
+if (is.na(iscen)) {
+  iscen = 2
+}
+
+inside = eg$inside[iscen]
+threshold = eg$threshold[iscen]
+tapp = ifelse(
+  threshold,
+  "threshold_", "")
+
+# not imputed data
+# inside = "no_imputed_"
+# Output files
+pop_activ_file = file.path(
+  out_dir,
+  paste0(prefix, 
+         "pop_", inside,
+         tapp,
+         "activity_long.rds"))
 
 data = readRDS(pop_activ_file)
 # data = readRDS(pop_no_imp_activ_file)
 data_ids = unique(data$biobank_id)
 
-stopifnot(all(demog_ids %in% data_ids))
+if (!all(demog_ids %in% data_ids)) {
+  message(iscen)
+  message(eg[iscen,])
+  print(demog_ids[ !demog_ids %in% data_ids])
+  warning("Not all IDs present")
+}
 stopifnot(all(data_ids %in% demog_ids))
 
 qcut = function(x, 
@@ -100,7 +123,7 @@ demog = demog[, c("biobank_id", run_vars)]
 
 pdfname = file.path(res_dir, 
     paste0("Median_", 
-      inside,
+      inside, tapp,
       "plots.pdf"))
 pdf(pdfname)
 
