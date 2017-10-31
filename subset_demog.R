@@ -164,7 +164,7 @@ d = d %>%
 # renaming the single time point columns
 d = d %>% 
   rename(
-    eid = f.eid,
+    biobank_id = f.eid,
     sex = f.31.0.0,
     yob = f.34.0.0,
     mob = f.52.0.0
@@ -173,6 +173,19 @@ d = d %>%
 cancer = colnames(d)
 cancer = grepl("40008|40005", cancer)
 d = d[, !cancer]
+
+makedate = function(x) {
+  if (is.character(x)) {
+    x = as.numeric(x)
+  }
+  as.Date(x, origin = "1970-01-01")
+}
+
+d = d %>%  
+  mutate(
+    date_attend = makedate(date_attend),
+    date_death = makedate(date_death),
+  )
 
 outfile = file.path(
   tab_dir, 

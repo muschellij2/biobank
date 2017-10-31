@@ -2,6 +2,7 @@
 rm(list=ls())
 library(biobankr)
 library(dplyr)
+library(tidyr)
 # set to
 # /dcl01/chatterj/data/ukbiobank/phenotype
 pheno_dir = Sys.getenv("biobank")
@@ -45,7 +46,7 @@ iscen = as.numeric(
   Sys.getenv("SGE_TASK_ID")
 )
 if (is.na(iscen)) {
-  iscen = 2
+  iscen = 1
 }
 
 # for (iscen in seq(nrow(eg))) {
@@ -75,64 +76,54 @@ if (is.na(iscen)) {
             "threshold_", ""),
            "activity_long.rds"))
 
+  pop_activ_1440 = file.path(
+    out_dir,
+    paste0(prefix, 
+      "pop_", inside,
+      ifelse(threshold, 
+      "threshold_", ""),
+      "activity_1440.rds"))
 
-  df = ungroup(df)
   
-  date_vec = df$date
-  df$date = NULL; gc()
-  date_vec = as.POSIXlt(date_vec)
-  df$minute = time_to_min(date_vec)
-
   if (threshold) {
-    date_vec = yyyymmdd(date_vec)
-    df$day = date_vec
-    rm(date_vec); gc()
-
     df = df %>% 
-      ungroup %>% 
-      group_by(biobank_id, day) %>% 
-      mutate(n_minutes = n()) %>% 
-      ungroup()
-
-    min_minutes = ceiling(1440*0.95)
-    df = df %>% 
-      filter(n_minutes >= min_minutes)
-    df = df %>% 
-      select( -n_minutes )
-  } else {
-    rm(date_vec); gc()
-  }
+      filter(above_threshold)
+  } 
 
 
   # don't need day anymore
   df$day = NULL
+  df$above_threshold = NULL;
+  gc()
   # df = df %>% 
   #   rename(n = num_obs)
 
   df = df %>% 
-    mutate(sum = n * acceleration)
-
-  df = df %>% 
-    select(-acceleration)
+    mutate(acceleration = n * acceleration)
 
 
   df = df %>% 
     group_by(biobank_id, minute) %>% 
-    summarize(sum = sum(sum),
+    summarize(
+      acceleration = sum(acceleration),
       n = sum(n)) %>% 
     ungroup
 
   df = df %>% 
-    mutate(acceleration = sum/n) %>% 
-    select(-sum, -n)
+    mutate(acceleration = acceleration/n) %>% 
+    select(-n)
 
   saveRDS(object = df, 
           file = pop_activ_file)
-  rm(list = c("df"))
-  for (i in 1:10) {
-    gc()
-  }
-# }
+
+  df = spread(df, 
+    key = minute, 
+    value = acceleration)
+
+  saveRDS(object = df, 
+          file = pop_activ_1440)
+
+
 
 
 

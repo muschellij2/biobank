@@ -44,7 +44,8 @@ iscen = as.numeric(
   Sys.getenv("SGE_TASK_ID")
 )
 if (is.na(iscen)) {
-  iscen = 1
+  iscen = 2
+  # already ran 1
 }
 inside = insides[iscen]
 print(inside)
@@ -119,16 +120,38 @@ pop_daily_file = file.path(
 
 daily_df = bind_rows(daily, 
   .id = "biobank_id")
-daily_df$biobank_id = as.integer(
-  daily_df$biobank_id)
-daily_df$acceleration = 
-  as.numeric(daily_df$acceleration)
-
 
 rm(list = c("daily"))
 for (i in 1:10) {
   gc()
 }
+daily_df$biobank_id = as.integer(
+  daily_df$biobank_id)
+daily_df$acceleration = 
+  as.numeric(daily_df$acceleration)
+
+daily_df = ungroup(daily_df)
+  
+date_vec = daily_df$date
+daily_df$date = NULL; gc()
+date_vec = as.POSIXlt(date_vec)
+daily_df$minute = time_to_min(date_vec)
+date_vec = yyyymmdd(date_vec)
+daily_df$day = date_vec
+rm(date_vec); gc()
+
+daily_df = daily_df %>% 
+  ungroup %>% 
+  group_by(biobank_id, day) %>% 
+  mutate(n_minutes = n()) %>% 
+  ungroup()
+
+min_minutes = ceiling(1440*0.95)
+daily_df = daily_df %>% 
+  mutate(above_threshold = 
+    n_minutes>= min_minutes)
+daily_df$n_minutes = NULL
 
 saveRDS(object = daily_df, 
         file = pop_daily_file)
+
