@@ -70,6 +70,7 @@ if (is.na(iscen)) {
   # note the change in no_imp_daily
   df = readRDS(file = pop_daily_file)
   check = !any(is.na(df$biobank_id))
+  df = df[ df$biobank_id %in% biobank_ids,]
   stopifnot(check)
 
   if (threshold) {
@@ -91,18 +92,18 @@ if (is.na(iscen)) {
   df$hour = hr_min[, "hour"]
   rm(hr_min)
 
-  # 3 am to 6 am
-  limits = c(3, 6)
+  # 3 am to 5 am
+  limits = c(3, 5)
   sub_df = df %>% 
     select(-day, -min) %>% 
     mutate(
-      keep = hour >= limits[1] &  
+      night_time = hour >= limits[1] &  
       hour <= limits[2]
       ) %>% 
   select(-hour)
 
-  day = sub_df[ sub_df$keep, ]
-  night = sub_df[ !sub_df$keep, ]
+  day = sub_df[ !sub_df$night_time, ]
+  night = sub_df[ sub_df$night_time, ]
 
   r = range(c(day$acceleration))
   r = range(c(r, 
@@ -114,7 +115,7 @@ if (is.na(iscen)) {
   ##########################
   min_pop_df = sub_df %>% 
     ungroup %>% 
-    group_by(keep) %>% 
+    group_by(night_time) %>% 
     summarize(
       median = median(acceleration),
       q95 = quantile(acceleration, 
@@ -122,7 +123,7 @@ if (is.na(iscen)) {
       mean = mean(acceleration))
 
   min_q95 = min_pop_df %>% 
-    filter(keep) %>%  # keep night
+    filter(night_time) %>%  # keep night
     select(q95) %>% unlist
 
   ##########################
@@ -135,6 +136,8 @@ if (is.na(iscen)) {
         "threshold", ""),      
       ".pdf")
     )
+  pdfname = gsub("_.pdf", 
+    ".pdf", pdfname)
   pdf(pdfname)
     hist(
       day$acceleration, 
@@ -171,16 +174,25 @@ if (is.na(iscen)) {
 
 
   # less than 2 g
+  # 500mg is 99.9 quantile
+  # actually 498.4
+  # sub_df = sub_df %>% 
+  #   filter(
+  #     acceleration < 2000)
+
   sub_df = sub_df %>% 
     filter(
-      acceleration < 2000)
+      acceleration < 500)
 
   ##########################
   # look at the txt file of the bad_ids
   ##########################
   odd_ids = c(2898965, 
     3853046, 
-    5952814)
+    5952814,
+    1496134, 2005661L, 2967919L, 
+    3462861L, 4476664L, 4992884L, 
+    5849230L)
 
   bad_df = sub_df %>% 
     filter(biobank_id %in% odd_ids)
@@ -191,10 +203,21 @@ if (is.na(iscen)) {
   # all day/night
   ##########################    
   summ_df = sub_df %>% 
-    group_by(biobank_id, keep) %>% 
+    group_by(biobank_id, night_time) %>% 
     summarize(mean = mean(acceleration),
       median = median(acceleration),
+      sd = sd(acceleration),
       n = n())
+
+  # Only one per person
+  summary_file = file.path(
+    out_dir,
+    paste0(prefix, 
+           "pop_", inside, 
+           ifelse(threshold, 
+            "threshold_", ""),
+           "summary.rds"))    
+  saveRDS(summ_df, file = summary_file)
 
   ##########################
   # summarize over population
@@ -202,7 +225,7 @@ if (is.na(iscen)) {
   pop_df = summ_df %>% 
     filter(n > 0) %>%   
     ungroup %>% 
-    group_by(keep) %>% 
+    group_by(night_time) %>% 
     summarize(
       median = median(mean),
       q95 = quantile(mean, probs = 0.95),
@@ -211,7 +234,7 @@ if (is.na(iscen)) {
   # quantile of mean for night
   ##########################  
   q95 = pop_df %>% 
-    filter(keep) %>% 
+    filter(night_time) %>% 
     select(q95) %>% unlist
   
   ##########################
@@ -223,9 +246,10 @@ if (is.na(iscen)) {
 
   plot_df = plot_df %>% 
     mutate(
-      time = if_else(keep, "night", "day")
+      time = if_else(night_time, 
+        "night", "day")
       ) %>% 
-    select(-keep)
+    select(-night_time)
   plot_df = plot_df %>% 
     spread(time, mean)
 
@@ -243,6 +267,8 @@ if (is.na(iscen)) {
       ifelse(threshold, 
             "threshold", ""),      
       ".png"))
+  pngname = gsub("_.png", 
+    ".png", pngname)  
   png(pngname)
     print(g)
   dev.off()
@@ -257,6 +283,8 @@ if (is.na(iscen)) {
             "threshold", ""),      
       ".png")
     )
+  pngname = gsub("_.png", 
+    ".png", pngname)    
   png(pngname)
     pp = plot_df  %>% 
       filter(day <= 100 & night <= 100) 
@@ -267,13 +295,13 @@ if (is.na(iscen)) {
   # plot_df %>% filter(day > 300)
   # sub_df %>% ggplot(
   #   aes(x= acceleration,
-  #     colour = keep)) + 
+  #     colour = night_time)) + 
   #   geom_line(stat = "density")
 
 
   probs = seq(0, 1, by = 0.01)
   qdf = sub_df %>% 
-    group_by(keep) %>% 
+    group_by(night_time) %>% 
     do( 
       tidy(
         t(quantile(.$acceleration, 
@@ -283,7 +311,7 @@ if (is.na(iscen)) {
     )
   qdf = qdf %>% 
     gather(quantile, value,
-    -keep)
+    -night_time)
   qdf = qdf %>% mutate(
     quantile = as.numeric(
       gsub("^X", "", quantile))

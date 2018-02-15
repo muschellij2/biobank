@@ -1,0 +1,41 @@
+Get quantiles for each subject
+For minute level data - done
+seq(0, 1, by = 0.1) - done
+4496053_90004_0_0 - is crazy
+Get same for 3:00-5:00AM
+
+- done
+
+For 5 second and minute:
+Mode -done
+Hist of mode for all them
+Plot around 100
+Look at KDE
+
+Histogram of all minute level data across all people
+	- define a threshold there
+
+Inclusion/exclusion criteria for data
+Popn threshold/mode
+
+# Normalization to the mode
+p = pnorm(-1)
+q_1sd = quantile(before the mode, probs = p)
+mode - q_1sd = sigma
+
+
+Problems:
+Identifying
+Minute level
+   - Per-day medians/means
+   - Overall mean
+   - Variance
+Number of points > 2 g
+Variability of 10AM data
+
+
+2.  Write chapter for ciprian (2-3 hours)
+1.  Write 1 fucking paragraph of binroc
+	- 1 before doing anything else.
+	- even if nonsense
+3.  Do 10 slides for talk (also see how long the talk is) - find old talk (5 min from dept) and the one from Zeffiro

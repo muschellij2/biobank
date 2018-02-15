@@ -21,3 +21,9 @@ eid,eid,FALSE
 40007,age_death,TRUE
 40008,age_cancer_dx,FALSE
 54,assessment_center,TRUE
+12144,height_imaging,FALSE
+50,standing_height,TRUE
+12143,weight_imaging,FALSE
+21002,weight,TRUE
+21,weight_method,TRUE
+3160,manual_weight,TRUE

@@ -63,6 +63,7 @@ if (is.na(iscen)) {
 
   # note the change in no_imp_daily
   df = readRDS(file = pop_daily_file)
+  df = df[ df$biobank_id %in% biobank_ids,]
   check = !any(is.na(df$biobank_id))
   stopifnot(check)
 
